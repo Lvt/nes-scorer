@@ -120,6 +120,7 @@ def read_img_data(buf):
 
 raw_image_buffer = bytearray(raw_argb_image_size)
 rawhashes = {}
+scoremap = []
 rgb = numpy.zeros((y, x, 3), dtype=numpy.uint8)
 duplicates = 0
 frame = 0
@@ -133,6 +134,7 @@ while True:
     rawhash = hash(str(data))
     if rawhash in rawhashes:
         duplicates = duplicates + 1
+        scoremap.append(0)
         continue
     rawhashes[rawhash] = 1
 
@@ -155,6 +157,7 @@ while True:
         else:
             tables[i][hashes[i]] = 1
             not_found = not_found + 1
+    scoremap.append(not_found)
     if found <= 1:
         score = score + 1
     quality_score = quality_score + not_found / (found + not_found)
@@ -170,6 +173,12 @@ if args.copy:
     outputfile = args.copy + "/" + str(int(quality_score)).zfill(8) + "_" + str(h) + ".fm2"
     print("# copy " + args.movie + " to " + outputfile)
     shutil.copyfile(args.movie, outputfile)
+    scores = open(outputfile + '.scores','w')
+    scores.write("# max=" + str(hashtables) + "\n")
+    for s in scoremap:
+        scores.write(str(s) + "\n")
+    scores.close()
+
 
 end_time = perf_counter()
 print("# time elapsed: ", end_time - start_time, "seconds")
