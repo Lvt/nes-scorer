@@ -45,14 +45,24 @@ def conceive(father, mother, childName):
 		fatherHandle.readline()
 		motherHandle.readline()
 
+	genomeStreak = 0
+	firstHandle = fatherHandle
+	secondHandle = motherHandle
 
 	for i in range(0, lineCountFM2):
-		fatherLine = fatherHandle.readline()
-		motherLine = motherHandle.readline()
+		if genomeStreak == 0:
+			handles = [fatherHandle, motherHandle]
+			firstHandle = handles.pop(random.randrange(len(handles)))
+			secondHandle = handles.pop(random.randrange(len(handles)))
+			genomeStreak = randint(1,100)
+
+		choosenLine = firstHandle.readline()
+		discardedLine = secondHandle.readline()
 		if randint(0, 100) < mutationPercentage:
 			childHandle.write(random.choice(allInputs))
 		else:
-			childHandle.write(random.choice([fatherLine, motherLine]))
+			childHandle.write(choosenLine)
+		genomeStreak = genomeStreak - 1
 
 	motherHandle.close()
 	fatherHandle.close()
