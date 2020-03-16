@@ -17,7 +17,7 @@ firstHeader="|1|........|........||\n"
 allInputs = []
 for first in ["..", "R.", ".L"]:
 	for second in ["..", "D.", ".U"]:
-		for start in [".", "T"]:
+		for start in [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "T"]:
 			for select in [".", "S"]:
 				for a in [".", "A"]:
 					for b in [".", "B"]:
